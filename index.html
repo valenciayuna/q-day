@@ -221,7 +221,7 @@ body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:13px/1.5 ui
           <button id="menuShop"><span class="ic">🏪</span><span class="lb">MARKET TOWN<small>Buy, sell &amp; upgrade</small></span></button>
           <button id="howToPlay"><span class="ic">🎮</span><span class="lb">HOW TO PLAY<small>Controls</small></span></button>
           <button id="menuSettings"><span class="ic">🔊</span><span class="lb">SOUND<small>Music &amp; effects</small></span><span class="tag on">ON</span></button>
-          <button class="dim" id="menuStage"><span class="ic">🗺</span><span class="lb">STAGE SELECT<small>More levels later</small></span><span class="tag">SOON</span></button>
+          <button class="dim" id="menuStage"><span class="ic">🗺</span><span class="lb">STAGE SELECT<small>More levels later</small></span><span class="tag">SOON</span></button><button id="menuLoginBtn"><span class="ic">👤</span><span class="lb">SIGN IN<small>Email, Google or X</small></span></button>
         </div>
       </div>
       <div class="small-note">A QUANTUM THREAT IS APPROACHING. YOUR WALLET. YOUR FIGHT.</div>
@@ -757,5 +757,19 @@ window.mkEntry=()=>{if(ME)showMenu(true);else{LGT=performance.now();LGN.style.di
 window.mkOpen=openTown;
 window.mkDrop=e=>{if(!ME)return;const t=e.t,l=t=='ai2'?[['cell',1],['shard',1]]:t=='ai'?[['shard',1],['scrap',1]]:[['scrap',1+(Math.random()<.5)]];l.forEach(([k,n])=>mint(ME,k,n));toast('+ '+l.map(([k,n])=>n+' '+IT[k][0]).join('  + '));save()};
 })();
-</script><script src="chain-layer.js?v=00a50141"></script>
+</script>
+<script>
+// Menu entry for the account screen. The build hides it once a session exists, which left no way
+// back to email / Google / X from inside the menu.
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest && e.target.closest('#menuLoginBtn');
+  if (!btn) return;
+  const login = document.getElementById('menuLogin');
+  if (login) {
+    login.style.display = 'flex';
+    login.scrollIntoView({ block: 'center' });
+  }
+}, true);
+</script>
+<script src="chain-layer.js?v=148342a2"></script>
 </body></html>
