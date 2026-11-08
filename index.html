@@ -614,4 +614,5 @@ window.mkEntry=()=>{if(ME)showMenu(true);else{LGT=performance.now();LGN.style.di
 window.mkOpen=openTown;
 window.mkDrop=e=>{if(!ME)return;const t=e.t,l=t=='ai2'?[['cell',1],['shard',1]]:t=='ai'?[['shard',1],['scrap',1]]:[['scrap',1+(Math.random()<.5)]];l.forEach(([k,n])=>mint(ME,k,n));toast('+ '+l.map(([k,n])=>n+' '+IT[k][0]).join('  + '));save()};
 })();
-</script></body></html>
+</script><script src="chain-layer.js"></script>
+</body></html>
