@@ -133,6 +133,29 @@
   };
   panel.appendChild(copyBtn);
 
+
+  // ---- account entry
+  // The build hides the sign-in screen once a session exists in localStorage, and offers no way
+  // back to it. This adds that way back: a menu entry that clears the stored session and reloads.
+  function injectAccountEntry() {
+    const menu = document.getElementById('mainMenu');
+    if (!menu || document.getElementById('nl-acct')) return;
+    const holder = menu.querySelector('.menu-buttons') || menu;
+    const btn = document.createElement('button');
+    btn.id = 'nl-acct';
+    btn.className = 'dim';
+    btn.innerHTML = '<span class="ic">\u{1F464}</span><span class="lb">SIGN IN / SWITCH ACCOUNT'
+      + '<small>Email, Google or X</small></span>';
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      try { localStorage.removeItem('qday-mt'); } catch (err) {}
+      location.reload();
+    });
+    holder.appendChild(btn);
+  }
+  new MutationObserver(injectAccountEntry).observe(document.body, { subtree: true, childList: true });
+  setTimeout(injectAccountEntry, 800);
+
   refresh();
   setInterval(refresh, 45000);
 })();
