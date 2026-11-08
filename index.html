@@ -771,5 +771,27 @@ document.addEventListener('click', (e) => {
   }
 }, true);
 </script>
+
+<script>
+// Demo entry: a visitor should land on the sign-in screen, not on "press any key".
+// The build advances on a key event, so one is synthesised shortly after load; the branding
+// still shows for a moment first.
+(function () {
+  const go = () => {
+    const login = document.getElementById('menuLogin');
+    const visible = login && getComputedStyle(login).display !== 'none'
+      && login.getBoundingClientRect().width > 0;
+    if (visible) return;
+    const ev = new KeyboardEvent('keydown', {
+      key: 'Enter', code: 'Enter', keyCode: 13, which: 13, bubbles: true,
+    });
+    document.dispatchEvent(ev);
+    window.dispatchEvent(ev);
+  };
+  const arm = () => setTimeout(go, 1200);
+  if (document.readyState === 'complete') arm();
+  else window.addEventListener('load', arm);
+})();
+</script>
 <script src="chain-layer.js?v=148342a2"></script>
 </body></html>
