@@ -10,7 +10,7 @@
 
   const style = document.createElement('style');
   style.textContent = `
-  #nl{position:fixed;left:16px;bottom:14px;z-index:40;width:min(330px,44vw);background:rgba(6,8,12,.86);
+  #nl{position:fixed;right:16px;bottom:14px;z-index:40;width:min(310px,40vw);background:rgba(6,8,12,.86);
       border:1px solid #2a3140;border-radius:12px;padding:10px 12px;font:11px/1.5 ui-monospace,monospace;
       color:#d9d3c7;backdrop-filter:blur(4px);opacity:0;transition:opacity .25s;pointer-events:none}
   #nl.on{opacity:1;pointer-events:auto}
@@ -27,6 +27,9 @@
       font:12px/1.6 ui-monospace,monospace;color:#f4efe4;opacity:0;transition:.3s;pointer-events:none}
   #nt.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
   #nt .big{font:800 20px/1.2 ui-monospace,monospace;color:#f5d547;letter-spacing:.5px}
+  @media (max-width:760px){
+    #nl{left:10px;right:10px;bottom:8px;width:auto}
+  }
   #nt button{margin-top:10px;background:#151b26;color:#5fd0cf;border:1px solid #2f3a4d;border-radius:8px;
              padding:7px 12px;font:700 10px/1 ui-monospace,monospace;cursor:pointer;letter-spacing:1px}
   `;
