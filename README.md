@@ -2,6 +2,8 @@
 
 Post-quantum beat 'em up built on NEAR testnet.
 
+Hackathon note: this is one of two independent entries by the same builder. The other is [Cozy Hood Trails](https://github.com/valenciayuna/cozy-hood-trails), a life sim about a restaurant and a market. Different repos, different builds, no shared code.
+
 - Play: https://valenciayuna.github.io/q-day/
 - Leaderboard contract: `qday-arena-5959.testnet`
 
