@@ -114,8 +114,10 @@ Built with AI coding assistants at the author's direction.
 - **Browser:** no frameworks, no bundler, no npm dependencies. The game is plain JavaScript on a
   `<canvas>` element. `chain-layer.js` is also dependency-free — it only uses `fetch`.
 - **Audio:** generated live with the Web Audio API; there are no audio files.
-- **Art:** sprites and backgrounds ship inside `index.html` as data URIs. They are original
-  placeholder-style drawings made for this build, not taken from another game or asset store.
+- **Art:** sprites and backgrounds ship inside `index.html` as data URIs. They are original to this
+  build, not taken from another game or asset store. Several images were helped along with AI
+  generation, mainly for polish and upscaling — the base artwork is drawn for this project, then
+  cleaned up and sharpened with an image model rather than replaced by one.
 
 ## Independence
 
