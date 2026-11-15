@@ -1,13 +1,19 @@
 # Q-DAY
 
 Post-quantum beat 'em up where you play Guardian NEAR, defending a wallet that is being cracked by a
-quantum computer. Single HTML file, no install, runs on desktop and phone.
+quantum computer. One HTML file plus one drop-in JS overlay, no install, runs on desktop and phone.
 
 **Play:** https://valenciayuna.github.io/q-day/
 
-Hackathon note: this is one of two independent entries by the same builder. The other is
-[Cozy Hood Trails](https://github.com/valenciayuna/cozy-hood-trails), a life sim about a restaurant
-and a market. Different repos, different builds, no shared code.
+**Track:** Games.
+
+**License:** MIT — see [LICENSE](LICENSE).
+
+## Baseline
+
+The project began **8 November 2026**, inside the hackathon development window (1 November –
+14 November 2026). Every commit in this repository falls within that window; the first is dated
+2026-11-08 and the last 2026-11-14. Nothing in the build predates the window.
 
 ## The run
 
@@ -45,21 +51,45 @@ not decoration.
 
 The ultimate burns a meter that fills as you fight; it cannot be spammed.
 
+## How to judge it (no install, no account)
+
+1. Open https://valenciayuna.github.io/q-day/ — sign in as a guest, no seed phrase, no wallet popup.
+2. Play through waves 1–3. Confirm the controls above and that the ultimate needs a full meter.
+3. Reach wave 5, walk through the `GO` gate, and watch the camera scroll into the boss.
+4. Land a hit on the Stand during its 2-second recovery to confirm the damage rule.
+5. After any run, open the **NEAR Testnet Leaderboard** panel on the menu to see the live board.
+   It reads straight from the contract with a plain view call.
+
+If you want to check the contract directly instead of playing:
+
+```sh
+near view qday-arena-5959.testnet top '{"n":10}'
+```
+
 ## What is on chain
 
 The leaderboard is a real contract on NEAR testnet:
 
 - Contract: `qday-arena-5959.testnet`
-- `submit(name, score, wave, boss_down)` writes a run; `top(n)` reads the board back
+- Source: [`contract-src/src/lib.rs`](contract-src/src/lib.rs), built against `near-sdk 5.30`
+- `submit(name, score, wave, boss_down)` writes a run; `top(n)`, `rank_of`, `players`,
+  `total_plays` and `owner` read it back
+- `submit` keeps only each account's personal best, so replaying cannot spam the board
 - The in-game panel calls `top` with a plain view call, so it needs no wallet and no key
 
-Current board, read from RPC:
+Board as read from RPC on **15 November 2026**:
 
 ```
 [{'account': 'qday-arena-5959.testnet', 'name': 'Krampus', 'score': 4820, 'wave': 5, 'boss_down': True}]
+total_plays: 2    players: 1    owner: qday-arena-5959.testnet
 ```
 
-Submit your own run:
+That single entry is the one submission made so far, posted from the contract account itself. It is
+an example of the shape, not a populated leaderboard.
+
+**The game never signs anything.** There is no wallet, signer, key or transaction inside
+`index.html` or `chain-layer.js`. The player submits with `near-cli` (or any signed call); when a
+run beats the stored high score, the game offers to copy the exact command for that:
 
 ```sh
 near call qday-arena-5959.testnet submit \
@@ -67,22 +97,35 @@ near call qday-arena-5959.testnet submit \
   --accountId YOUR.testnet
 ```
 
-Read the board:
-
-```sh
-near view qday-arena-5959.testnet top '{"n":10}'
-```
-
-When a run beats your stored high score, the game offers to copy the exact submit command.
-
 ## Files
 
 | File | Role |
 |---|---|
 | `index.html` | the whole game: canvas engine, sprites, audio, menu |
-| `chain-layer.js` | the NEAR leaderboard overlay. It never touches the game's own code |
+| `chain-layer.js` | the NEAR leaderboard overlay, loaded as an external script. It only creates its own DOM nodes and styles, and never touches the game's code or state |
+| `contract-src/` | Rust source for the leaderboard contract (`Cargo.toml` + `src/lib.rs`) |
+| `LICENSE` | MIT |
 
-## Scope
+## Scope and dependencies
 
-Built with AI coding assistants at the author's direction. Sound is generated live with the Web
-Audio API; there are no audio files. Sprites and backgrounds ship inside `index.html` as data URIs.
+Built with AI coding assistants at the author's direction.
+
+- **Contract:** `near-sdk 5.30`, `borsh 1.5`. That is the whole chain-side stack.
+- **Browser:** no frameworks, no bundler, no npm dependencies. The game is plain JavaScript on a
+  `<canvas>` element. `chain-layer.js` is also dependency-free — it only uses `fetch`.
+- **Audio:** generated live with the Web Audio API; there are no audio files.
+- **Art:** sprites and backgrounds ship inside `index.html` as data URIs. They are original
+  placeholder-style drawings made for this build, not taken from another game or asset store.
+
+## Independence
+
+This is one of two independent entries by the same builder. The other is
+[Cozy Hood Trails](https://github.com/valenciayuna/cozy-hood-trails), a life sim about a restaurant
+and a market.
+
+The two projects share no code. Both repositories were checked: the intersection of function names
+between `chain-layer.js` and the Cozy Hood build is empty apart from standard browser globals
+(`fetch`, `setTimeout`, `getElementById`), and the only shared string literals are
+`application/json` and the public NEAR testnet RPC endpoint
+(`https://rpc.testnet.fastnear.com`). They use different contracts, different domains, and separate
+repositories and builds.
